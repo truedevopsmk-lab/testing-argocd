@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx-example
+  namespace: argocd # Assuming Argo CD is installed in the 'argocd' namespace
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/truedevopsmk-lab/testing-argocd.git # Replace with your Git repository URL
+    targetRevision: HEAD # Or a specific branch/tag, e.g., 'main'
+    path: k8s # Path within your repository where the Kubernetes manifests are located
+  destination:
+    server: https://kubernetes.default.svc # The default Kubernetes API server
+    namespace: myapp2 # The namespace where the application should be deployed
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true # Automatically create the target namespace if it doesn't exist
